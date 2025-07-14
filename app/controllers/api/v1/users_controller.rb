@@ -1,4 +1,6 @@
 class Api::V1::UsersController < ApplicationController
+    before_action :set_user, only: %i[ show update destroy ]
+
     def index
         @users = User.all
         render json: @users
@@ -25,7 +27,7 @@ class Api::V1::UsersController < ApplicationController
 
     def update
         if @user.update(user_params.except(:password))
-            if params[:user][:password].present?
+            if params[:password].present?
                 @user.update(password: params[:user][:password])
             end
             render json: @user
