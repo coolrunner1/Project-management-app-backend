@@ -2,7 +2,7 @@ class Api::V1::ProjectsController < ApplicationController
     before_action :set_project, only: %i[ show update destroy ]
 
     def index
-        @projects = Project.all
+        @projects = Project.where("user_id = ?", 1)
         render json: @projects
     end
 
@@ -42,7 +42,7 @@ class Api::V1::ProjectsController < ApplicationController
 
     private
     def set_project
-        @project = Project.find(params[:id])
+        @project = Project.find_by(id: params[:id], user_id: 1)
     end
 
     def project_params
