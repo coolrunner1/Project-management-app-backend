@@ -27,8 +27,8 @@ class Api::V1::UsersController < ApplicationController
 
     def update
         if @user.update(user_params.except(:password))
-            if params[:password].present?
-                @user.update(password: params[:user][:password])
+            if user_params[:password].present?
+                @user.update(password: user_params[:password])
             end
             render json: @user
         else
