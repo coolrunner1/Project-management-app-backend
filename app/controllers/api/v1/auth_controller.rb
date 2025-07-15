@@ -1,6 +1,8 @@
 class Api::V1::AuthController < ApplicationController
     include JsonWebToken
 
+    skip_before_action :authorize_request
+
     def login 
         login_value = params[:login].to_s
 
@@ -12,7 +14,7 @@ class Api::V1::AuthController < ApplicationController
 
         if user&.authenticate(params[:password])
             token = encode_token(user_id: user.id, email: user.email)
-            render json: { token: token, user: user.as_json(except: [:password_digest]) }, status: :ok
+            render json: { token: "Bearer #{token}", user: user.as_json(except: [:password_digest]) }, status: :ok
         else
             render json: { error: "Invalid login or password" }, status: :unauthorized
         end
@@ -24,7 +26,7 @@ class Api::V1::AuthController < ApplicationController
         if user.save
             if user&.authenticate(register_params[:password])
                 token = encode_token(user_id: user.id, email: user.email)
-                render json: { token: token, user: user.as_json(except: [:password_digest]) }, status: :ok
+                render json: { token: "Bearer #{token}", user: user.as_json(except: [:password_digest]) }, status: :ok
             else
                 render json: { error: "Invalid login or password" }, status: :unauthorized
             end

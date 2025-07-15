@@ -1,4 +1,5 @@
 class Api::V1::TasksController < ApplicationController
+    before_action :check_project
     before_action :set_task, only: %i[ show update destroy ]
 
     def index
@@ -22,11 +23,7 @@ class Api::V1::TasksController < ApplicationController
     end
 
     def show
-        if @task
-            render json: @task
-        else 
-            render json: {"error": "not found"}, status: :not_found
-        end
+        render json: @task
     end
 
     def create
@@ -78,8 +75,19 @@ class Api::V1::TasksController < ApplicationController
     end
 
     private
+    def check_project
+        project = Project.find_by(id: params[:project_id], user_id: @current_user.id)
+        unless project
+            render json: {"error": "project does not exist"}, status: :not_found
+        end
+    end
+
+    private
     def set_task
         @task = Task.find_by(id: params[:id], project_id: params[:project_id])
+        unless @task
+            render json: { error: "task not found" }, status: :not_found and return
+        end
     end
 
     def task_params

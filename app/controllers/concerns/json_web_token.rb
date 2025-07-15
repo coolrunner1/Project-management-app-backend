@@ -2,7 +2,7 @@ require 'jwt'
 
 module JsonWebToken
     extend ActiveSupport::Concern
-    JWT_SECRET_KEY = Rails.application.credentials.jwt_secret
+    JWT_SECRET_KEY = ENV["JWT_SECRET"] || "placeholder_secret"
 
     def encode_token(payload, exp = 12.hours.from_now)
         payload[:exp] = exp.to_i
@@ -10,6 +10,7 @@ module JsonWebToken
     end
 
     def decode_token(token)
+        print JWT_SECRET_KEY
         decoded = JWT.decode(token, JWT_SECRET_KEY)[0]
         HashWithIndifferentAccess.new(decoded)
     rescue JWT::DecodeError, JWT::ExpiredSignature

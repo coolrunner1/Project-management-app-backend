@@ -49,3 +49,5 @@ end
 gem "bcrypt", "~> 3.1.7"
 
 gem "jwt", "~> 3.1"
+
+gem "dotenv-rails", "~> 3.1"
