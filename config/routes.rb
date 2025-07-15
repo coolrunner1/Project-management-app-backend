@@ -3,9 +3,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'auth/login', to: 'auth#login'
       post 'auth/register', to: 'auth#register'
-      get 'users/my', to: 'users#show'
-      put 'users/my', to: 'users#update'
-      delete 'users/my', to: 'users#destroy'
+      get 'profile', to: 'profile#show'
+      put 'profile', to: 'profile#update'
+      delete 'profile', to: 'profile#destroy'
       resources :projects do 
         resources :tasks
       end
