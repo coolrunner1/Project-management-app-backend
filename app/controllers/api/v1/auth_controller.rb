@@ -16,7 +16,7 @@ class Api::V1::AuthController < ApplicationController
             token = encode_token(user_id: user.id, email: user.email)
             render json: { token: "Bearer #{token}", user: user.as_json(except: [:password_digest]) }, status: :ok
         else
-            render json: { error: "Invalid login or password" }, status: :unauthorized
+            render json: { error: "Invalid login or password" }, status: :unprocessable_entity
         end
     end
 
@@ -28,7 +28,7 @@ class Api::V1::AuthController < ApplicationController
                 token = encode_token(user_id: user.id, email: user.email)
                 render json: { token: "Bearer #{token}", user: user.as_json(except: [:password_digest]) }, status: :ok
             else
-                render json: { error: "Invalid login or password" }, status: :unauthorized
+                render json: { error: "Invalid login or password" }, status: :unprocessable_entity
             end
         else 
             render json: user.errors, status: :unprocessable_entity
