@@ -3,7 +3,7 @@ class Api::V1::ProjectsController < ApplicationController
 
     def index
         @projects = Project.where("user_id = ?", @current_user.id)
-        render json: @projects
+        render json: @projects.order(updated_at: :desc)
     end
 
     def show

@@ -19,6 +19,10 @@ class Api::V1::TasksController < ApplicationController
             @tasks = @tasks.order(updated_at: :asc)
         end
 
+        if params[:status]
+            @tasks = @tasks.where(status: params[:status])
+        end
+
         render json: @tasks
     end
 
