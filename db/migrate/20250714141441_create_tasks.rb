@@ -4,7 +4,7 @@ class CreateTasks < ActiveRecord::Migration[8.0]
       t.string :title, null: false
       t.text :description
       t.integer :status, null: false
-      t.references :project, null: false, foreign_key: true
+      t.references :project, null: false, foreign_key: { on_delete: :cascade, on_update: :cascade }
 
       t.timestamps
     end
