@@ -1,6 +1,6 @@
 class Api::V1::ProfileController < ApplicationController
     def show
-        render json: @current_user
+        render json: @current_user.as_json(except: [:password_digest]) 
     end
 
     def update
@@ -8,7 +8,7 @@ class Api::V1::ProfileController < ApplicationController
             if user_params[:password].present?
                 @current_user.update(password: user_params[:password])
             end
-            render json: @current_user
+            render json: @current_user.as_json(except: [:password_digest])
         else
             render json: @current_user.errors, status: :unprocessable_entity
         end
